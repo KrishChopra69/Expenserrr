@@ -12,7 +12,7 @@ import { Session } from '@supabase/supabase-js';
 function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [currency, setCurrency] = useState('USD');
+  const [currency, setCurrency] = useState('INR');
   const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
