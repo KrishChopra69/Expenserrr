@@ -22,11 +22,10 @@ import { cn } from '../lib/utils';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Toast } from './ui/toast';
 
 const formSchema = z.object({
   type: z.enum(['income', 'expense']),
-  amount: z.string().min(1, 'Amount is required').refine(val => !isNaN(Number(val)) && Number(val) > 0, {
+  amount: z.string().min(1, 'Amount is required').refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
     message: 'Amount must be a positive number',
   }),
   category: z.string().min(1, 'Category is required'),
@@ -52,46 +51,43 @@ export function TransactionForm({ onTransactionAdded, currency }: Props) {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [feedback, setFeedback] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log('Form values:', values);
     setIsLoading(true);
+    setFeedback(null); // Clear previous feedback
+
     try {
       const user = await supabase.auth.getUser();
       if (!user.data.user) throw new Error('User not found');
 
       const { error } = await supabase
         .from('transactions')
-        .insert([{
-          amount: parseFloat(values.amount),
-          category: values.category,
-          description: values.description,
-          type: values.type,
-          date: values.date.toISOString(),
-          user_id: user.data.user.id,
-        }]);
+        .insert([
+          {
+            amount: parseFloat(values.amount),
+            category: values.category,
+            description: values.description,
+            type: values.type,
+            date: values.date.toISOString(),
+            user_id: user.data.user.id,
+          },
+        ]);
 
       if (error) throw error;
 
-      Toast({
-        title: 'Success!',
-        children: (
-          <div className="text-sm">
-            Transaction added successfully
-          </div>
-        ),
+      setFeedback({
+        message: 'Transaction added successfully',
+        type: 'success',
       });
 
       form.reset();
       onTransactionAdded();
     } catch (error: any) {
-      Toast({
-        title: 'Error',
-        children: (
-          <div className="text-sm">
-            {error.message}
-          </div>
-        ),
-        variant: 'destructive',
+      setFeedback({
+        message: error.message,
+        type: 'error',
       });
     } finally {
       setIsLoading(false);
@@ -104,7 +100,7 @@ export function TransactionForm({ onTransactionAdded, currency }: Props) {
         <PlusCircle className="w-5 h-5" />
         Add Transaction
       </h2>
-      
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -161,10 +157,7 @@ export function TransactionForm({ onTransactionAdded, currency }: Props) {
               <FormItem>
                 <FormLabel>Category</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="e.g., Groceries, Rent, Salary"
-                    {...field}
-                  />
+                  <Input placeholder="e.g., Groceries, Rent, Salary" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -178,10 +171,7 @@ export function TransactionForm({ onTransactionAdded, currency }: Props) {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Enter a description"
-                    {...field}
-                  />
+                  <Input placeholder="Enter a description" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -200,15 +190,11 @@ export function TransactionForm({ onTransactionAdded, currency }: Props) {
                       <Button
                         variant="outline"
                         className={cn(
-                          "w-full pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
+                          'w-full pl-3 text-left font-normal',
+                          !field.value && 'text-muted-foreground'
                         )}
                       >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
+                        {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
                     </FormControl>
@@ -218,9 +204,7 @@ export function TransactionForm({ onTransactionAdded, currency }: Props) {
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
+                      disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
                       initialFocus
                     />
                   </PopoverContent>
@@ -235,6 +219,16 @@ export function TransactionForm({ onTransactionAdded, currency }: Props) {
           </Button>
         </form>
       </Form>
+
+      {/* Feedback Message */}
+      {feedback && (
+        <div
+          className={`mt-4 p-3 rounded-md text-sm ${feedback.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+            }`}
+        >
+          {feedback.message}
+        </div>
+      )}
     </div>
   );
 }
