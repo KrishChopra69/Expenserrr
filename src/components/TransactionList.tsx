@@ -50,30 +50,18 @@ export function TransactionList({ transactions, currency, onDelete }: Props) {
     });
 
   const handleDelete = async (id: string) => {
+    console.log('Attempting to delete transaction with ID:', id);
     setLoading(true);
     try {
       await onDelete(id);
-      Toast({
-        title: 'Success!',
-        children: (
-          <div className="text-sm">
-            Transaction deleted successfully
-          </div>
-        ),
-        variant: 'default',
-      });
+      console.log('Success! Transaction deleted successfully');
     } catch (error: any) {
-      Toast({
-        title: 'Error',
-        children: (
-          <div className="text-sm">
-            {error.message}
-          </div>
-        ),
-        variant: 'destructive',
-      });
+      console.error('Error deleting transaction:', error.message);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
+
   return (
     <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardHeader>
@@ -157,9 +145,8 @@ export function TransactionList({ transactions, currency, onDelete }: Props) {
                     </TableCell>
                     <TableCell>{transaction.category}</TableCell>
                     <TableCell
-                      className={`font-medium ${
-                        transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
-                      }`}
+                      className={`font-medium ${transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
+                        }`}
                     >
                       {transaction.type === 'income' ? '+' : '-'}
                       {formatCurrency(Math.abs(transaction.amount), currency)}
