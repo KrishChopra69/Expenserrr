@@ -7,6 +7,9 @@ import {
 import { Wallet, TrendingUp, PieChart as PieChartIcon } from 'lucide-react';
 import type { Transaction } from '../types';
 import { formatCurrency } from './CurrencySelect';
+import SavingGoals from './SavingGoals';
+import { MLInsights } from './MLInsights';
+import { useUser } from '@supabase/auth-helpers-react';
 
 const COLORS = [
   '#3b82f6', // blue-500
@@ -23,6 +26,7 @@ interface Props {
 
 export function Dashboard({ transactions, currency }: Props) {
   const [loading, setLoading] = useState(true);
+  const user = useUser();
   
   const calculateTotals = () => {
     const income = transactions
@@ -124,6 +128,15 @@ export function Dashboard({ transactions, currency }: Props) {
         )}
       </div>
 
+      {/* ML Insights */}
+      {user && transactions.length > 0 && (
+        <MLInsights 
+          userId={user.id} 
+          transactions={transactions} 
+          currency={currency} 
+        />
+      )}
+
       {/* Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-lg shadow-md">
@@ -173,6 +186,15 @@ export function Dashboard({ transactions, currency }: Props) {
           </div>
         </div>
       </div>
+
+      {/* Saving Goals */}
+      <SavingGoals 
+        income={income}
+        expenses={transactions
+          .filter(t => t.type === 'expense')
+          .map(t => t.amount)
+        }
+      />
     </div>
   );
 }
