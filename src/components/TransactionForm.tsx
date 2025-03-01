@@ -26,7 +26,7 @@ import { CategorySuggestion } from './CategorySuggestion';
 
 const formSchema = z.object({
   type: z.enum(['income', 'expense']),
-  amount: z.string().min(1, 'Amount is required').refine(val => !isNaN(Number(val)) && Number(val) > 0, {
+  amount: z.string().min(1, 'Amount is required').refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
     message: 'Amount must be a positive number',
   }),
   category: z.string().min(1, 'Category is required'),
@@ -61,6 +61,7 @@ export function TransactionForm({ onTransactionAdded, currency }: Props) {
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log('Form values:', values);
     setIsLoading(true);
     setSubmitStatus(null);
     
@@ -175,33 +176,14 @@ export function TransactionForm({ onTransactionAdded, currency }: Props) {
 
           <FormField
             control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter a description"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
             name="category"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Category</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="e.g., Groceries, Rent, Salary"
-                    {...field}
-                  />
+                  <Input placeholder="e.g., Groceries, Rent, Salary" {...field} />
                 </FormControl>
+                <FormMessage />
                 {form.getValues('type') === 'expense' && watchedDescription && (
                   <CategorySuggestion 
                     description={watchedDescription}
@@ -209,6 +191,19 @@ export function TransactionForm({ onTransactionAdded, currency }: Props) {
                     onSelectCategory={handleCategorySelect}
                   />
                 )}
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter a description" {...field} />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -226,15 +221,11 @@ export function TransactionForm({ onTransactionAdded, currency }: Props) {
                       <Button
                         variant="outline"
                         className={cn(
-                          "w-full pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
+                          'w-full pl-3 text-left font-normal',
+                          !field.value && 'text-muted-foreground'
                         )}
                       >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
+                        {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
                     </FormControl>
@@ -244,9 +235,7 @@ export function TransactionForm({ onTransactionAdded, currency }: Props) {
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
+                      disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
                       initialFocus
                     />
                   </PopoverContent>

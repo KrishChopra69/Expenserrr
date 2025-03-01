@@ -47,7 +47,7 @@ function App() {
 
     // Then set up real-time subscription
     const channel = supabase
-      .channel('public:transactions')
+      .channel('transactions-channel')
       .on(
         'postgres_changes',
         {

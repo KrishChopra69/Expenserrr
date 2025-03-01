@@ -2,15 +2,20 @@
 
 A modern expense tracking application with ML-powered insights to help you manage your finances better.
 
-## Features
+## 🚀 Overview
+
+A web-based Personal Finance Tracker that helps users manage expenses, track transactions, and get ML-based expense predictions. Built with TypeScript and React, with real-time updates via Supabase.
+
+## 🎯 Features
 
 - **Transaction Management**: Add, view, and delete income and expense transactions
 - **Dashboard**: Visualize your spending patterns with charts and graphs
 - **ML Insights**: Get personalized saving goals and expense predictions
 - **Category Suggestions**: Automatic category suggestions for transactions
 - **Real-time Updates**: Changes are reflected instantly using Supabase real-time subscriptions
+- **Cloud-based**: Access anywhere, anytime with persistent storage
 
-## Tech Stack
+## 🛠 Tech Stack
 
 - **Frontend**: React, TypeScript, Tailwind CSS, shadcn/ui
 - **Backend**: FastAPI, Python
@@ -108,18 +113,6 @@ The current ML implementation uses simple rule-based and statistical models. To 
 3. Implement clustering for spending pattern analysis
 4. Add anomaly detection to identify unusual transactions
 
-## Testing the Backend
-
-To test the backend API endpoints:
-
-1. Make sure your backend server is running
-2. Run the test script:
-   ```
-   test_backend.bat
-   ```
-
-This will test all the ML endpoints and verify that they're working correctly.
-
 ## Troubleshooting
 
 If you encounter issues with the application:
@@ -135,4 +128,4 @@ If you encounter issues with the application:
 
 ## License
 
-MIT 
+MIT
