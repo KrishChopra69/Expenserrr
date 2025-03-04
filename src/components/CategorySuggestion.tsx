@@ -18,20 +18,30 @@ function getLocalCategorySuggestion(description: string): { category: string, co
     // Entertainment
     'netflix': 'Entertainment',
     'spotify': 'Entertainment',
+    'apple music': 'Entertainment',
+    'apple tv': 'Entertainment',
     'movie': 'Entertainment',
     'cinema': 'Entertainment',
     'theater': 'Entertainment',
+    'youtube': 'Entertainment',
+    'tiktok': 'Entertainment',
+    'instagram': 'Entertainment',
+    'facebook': 'Entertainment',
+    'twitter': 'Entertainment',
+    'snapchat': 'Entertainment',
     'concert': 'Entertainment',
     'game': 'Entertainment',
     'gaming': 'Entertainment',
     'playstation': 'Entertainment',
+    'ps5': 'Entertainment',
     'xbox': 'Entertainment',
     'nintendo': 'Entertainment',
     'hulu': 'Entertainment',
-    'disney+': 'Entertainment',
+    'hotstar': 'Entertainment',
     'amazon prime': 'Entertainment',
     'hbo': 'Entertainment',
     'ticket': 'Entertainment',
+    'tickets': 'Entertainment',
     
     // Daily Essentials
     'grocery': 'Daily Essentials',
@@ -48,6 +58,9 @@ function getLocalCategorySuggestion(description: string): { category: string, co
     'aldi': 'Daily Essentials',
     'lidl': 'Daily Essentials',
     'trader': 'Daily Essentials',
+    'blinkit': 'Daily Essentials',
+    'zepto': 'Daily Essentials',
+    'instamart': 'Daily Essentials',
     
     // Food
     'restaurant': 'Food',
@@ -90,6 +103,8 @@ function getLocalCategorySuggestion(description: string): { category: string, co
     // Transportation
     'uber': 'Transportation',
     'ola': 'Transportation',
+    'rapido': 'Transportation',
+    'indrive': 'Transportation',
     'lyft': 'Transportation',
     'taxi': 'Transportation',
     'cab': 'Transportation',
@@ -149,7 +164,11 @@ function getLocalCategorySuggestion(description: string): { category: string, co
     
     // Shopping
     'amazon': 'Shopping',
-    'shopping': 'Shopping',
+    'flipkart': 'Shopping',
+    'myntra': 'Shopping',
+    'ajio': 'Shopping',
+    'ebay': 'Shopping',
+   'shopping': 'Shopping',
     'store': 'Shopping',
     'mall': 'Shopping',
     'retail': 'Shopping',

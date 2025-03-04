@@ -8,6 +8,7 @@ import { supabase } from './lib/supabase';
 import type { Transaction } from './types';
 import { Settings } from 'lucide-react';
 import { Session } from '@supabase/supabase-js';
+import { SavingGoals } from './components/SavingGoals';
 
 function App() {
   const [session, setSession] = useState<Session | null>(null);
@@ -136,7 +137,8 @@ function App() {
       console.error('Error deleting transaction:', error);
     } else {
       console.log('Transaction deleted successfully');
-      // The real-time subscription should handle the state update
+      // Update local state immediately
+      setTransactions(prev => prev.filter(t => t.id !== id));
     }
   };
 
@@ -169,9 +171,14 @@ function App() {
             </div>
           </div>
           {showSettings && (
-            <div className="mt-4 p-4 bg-white rounded-lg shadow-lg">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Settings</h3>
-              <CurrencySelect value={currency} onChange={setCurrency} />
+            <div className="mt-4 p-4 bg-white rounded-lg shadow-lg space-y-6">
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Settings</h3>
+                <CurrencySelect value={currency} onChange={setCurrency} />
+              </div>
+              <div className="pt-4 border-t">
+                <SavingGoals currency={currency} />
+              </div>
             </div>
           )}
         </div>

@@ -176,6 +176,20 @@ export function TransactionForm({ onTransactionAdded, currency }: Props) {
 
           <FormField
             control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter a description" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="category"
             render={({ field }) => (
               <FormItem>
@@ -191,20 +205,6 @@ export function TransactionForm({ onTransactionAdded, currency }: Props) {
                     onSelectCategory={handleCategorySelect}
                   />
                 )}
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter a description" {...field} />
-                </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
